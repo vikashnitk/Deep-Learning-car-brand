@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.7
 
 RUN pip install virtualenv
 ENV VIRTUAL_ENV=/venv
@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 ENV PORT 8080
 
 # Run the application:
-CMD ["gunicorn", "app:app", "--config=config.py"]
+CMD python app.py
