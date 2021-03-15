@@ -1,18 +1,6 @@
-FROM python:3.6
-
-RUN pip install virtualenv
-ENV VIRTUAL_ENV=/venv
-RUN virtualenv venv -p python3
-ENV PATH="VIRTUAL_ENV/bin:$PATH"
-
-WORKDIR /app
-ADD . /app
-
-# Install dependencies
+FROM continuumio/anaconda3:4.4.0
+COPY . /usr/app/
+EXPOSE 5000
+WORKDIR /usr/app/
 RUN pip install -r requirements.txt
-
-# Expose port 
-ENV PORT 8080
-
-# Run the application:
 CMD python app.py
