@@ -12,11 +12,14 @@ import os
 import glob
 import re
 import numpy as np
+import tensorflow as tf
+
+graph = tf.get_default_graph()
 
 # Keras
-from tensorflow.keras.applications.imagenet_utils import preprocess_input, decode_predictions
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
+from tensorflow.python.keras.applications.resnet50 import preprocess_input, decode_predictions
+from tensorflow.python.keras.models import load_model
+from tensorflow.python.keras.preprocessing import image
 
 # Flask utils
 from flask import Flask, redirect, url_for, request, render_template
@@ -45,10 +48,11 @@ def model_predict(img_path, model):
     x=x/255
     x = np.expand_dims(x, axis=0)
    
-
+    with graph.as_default():
+        preds = model.predict(x)
    
 
-    preds = model.predict(x)
+    #preds = model.predict(x)
     preds=np.argmax(preds, axis=1)
     if preds==0:
         preds="The Car IS Audi"
@@ -87,4 +91,4 @@ def upload():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8000)
+    app.run(debug=True)
